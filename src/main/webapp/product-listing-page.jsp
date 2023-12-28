@@ -116,7 +116,7 @@ pageContext.setAttribute("allProducts", products);
 			</div>
 		</section>
 
-		<!-- end shop section -->
+		<!-- end product listing page section -->
 
 		<!-- saving section -->
 
