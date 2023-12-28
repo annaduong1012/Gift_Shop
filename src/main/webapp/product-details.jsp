@@ -124,7 +124,7 @@ pageContext.setAttribute("product", product);
 		</div>
 	</section>
 
-	<!-- end shop section -->
+	<!-- end product details section -->
 
 	<!-- saving section -->
 
