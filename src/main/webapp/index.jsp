@@ -1,3 +1,5 @@
+<%@page import="dao.CategoryDAO"%>
+<%@page import="entity.Category"%>
 <%@page import="java.util.List"%>
 <%@page import="dao.ProductDAO"%>
 <%@page import="entity.Product"%>
@@ -9,10 +11,21 @@
 <html>
 
 <%
-ProductDAO productDAO = new ProductDAO();
-List<Product> products = productDAO.getLatestProducts();
+// get category list to show in menu bar
+CategoryDAO categoryDAO = new CategoryDAO();
+pageContext.setAttribute("categoryList", categoryDAO.showCategory());
 
-pageContext.setAttribute("latestProducts", productDAO.getLatestProducts());
+// If category id = null, show latest Product, if not null, show product list by category
+Integer categoryId = null;
+String categoryIdFromReq = request.getParameter("categoryId");
+ProductDAO productDAO = new ProductDAO();
+
+if (categoryIdFromReq == null || categoryIdFromReq.isEmpty()) {
+	pageContext.setAttribute("latestProducts", productDAO.getLatestProducts());
+} else {
+	categoryId = Integer.parseInt(categoryIdFromReq);
+	pageContext.setAttribute("productListByCatId", productDAO.getProductByCategoryId(categoryId));
+}
 %>
 <head>
 <!-- Basic -->
@@ -47,8 +60,7 @@ pageContext.setAttribute("latestProducts", productDAO.getLatestProducts());
 		<!-- header section strats -->
 		<header class="header_section">
 			<nav class="navbar navbar-expand-lg custom_nav-container ">
-				<a class="navbar-brand" href="index.jsp"> <span> Giftos
-				</span>
+				<a class="navbar-brand" href="index.jsp"> <span> Giftos </span>
 				</a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse"
 					data-target="#navbarSupportedContent"
@@ -57,170 +69,110 @@ pageContext.setAttribute("latestProducts", productDAO.getLatestProducts());
 					<span class=""></span>
 				</button>
 
+				<!-- search bar -->
+				<div class="searchBar">
+					<form action="#" class="searchForm">
+						<div>
+							<input type="text" name="searchField"
+								placeholder="Search for product" />
+							<button class="searchBtn" type="submit">
+								<i class="fa fa-search" aria-hidden="true"></i>
+							</button>
+						</div>
+					</form>
+				</div>
+
+				<!-- end search bar -->
+
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav  ">
 						<li class="nav-item active"><a class="nav-link"
 							href="index.jsp">Home <span class="sr-only">(current)</span></a>
 						</li>
-						<li class="nav-item"><a class="nav-link" href="shop.jsp">
-								Shop </a></li>
-						<li class="nav-item"><a class="nav-link" href="why.jsp">
-								Why Us </a></li>
-						<li class="nav-item"><a class="nav-link"
-							href="testimonial.jsp"> Testimonial </a></li>
-						<li class="nav-item"><a class="nav-link" href="contact.jsp">Contact
-								Us</a></li>
+						<c:forEach items="${categoryList}" var="category">
+							<li class="nav-item"><a class="nav-link"
+								href="index.jsp?categoryId=${category.id}"> ${category.name}
+							</a></li>
+						</c:forEach>
 					</ul>
 					<div class="user_option">
 						<a href=""> <i class="fa fa-user" aria-hidden="true"></i> <span>
 								Login </span>
 						</a> <a href=""> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
 						</a>
-						<form class="form-inline ">
-							<button class="btn nav_search-btn" type="submit">
-								<i class="fa fa-search" aria-hidden="true"></i>
-							</button>
-						</form>
 					</div>
 				</div>
 			</nav>
 		</header>
 		<!-- end header section -->
-		<!-- slider section -->
-
-		<section class="slider_section">
-			<div class="slider_container">
-				<div id="carouselExampleIndicators" class="carousel slide"
-					data-ride="carousel">
-					<div class="carousel-inner">
-						<div class="carousel-item active">
-							<div class="container-fluid">
-								<div class="row">
-									<div class="col-md-7">
-										<div class="detail-box">
-											<h1>
-												Welcome To Our <br> Gift Shop
-											</h1>
-											<p>Sequi perspiciatis nulla reiciendis, rem, tenetur
-												impedit, eveniet non necessitatibus error distinctio
-												mollitia suscipit. Nostrum fugit doloribus consequatur
-												distinctio esse, possimus maiores aliquid repellat beatae
-												cum, perspiciatis enim, accusantium perferendis.</p>
-											<a href=""> Contact Us </a>
-										</div>
-									</div>
-									<div class="col-md-5 ">
-										<div class="img-box">
-											<img src="images/slider-img.png" alt="" />
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="carousel-item ">
-							<div class="container-fluid">
-								<div class="row">
-									<div class="col-md-7">
-										<div class="detail-box">
-											<h1>
-												Welcome To Our <br> Gift Shop
-											</h1>
-											<p>Sequi perspiciatis nulla reiciendis, rem, tenetur
-												impedit, eveniet non necessitatibus error distinctio
-												mollitia suscipit. Nostrum fugit doloribus consequatur
-												distinctio esse, possimus maiores aliquid repellat beatae
-												cum, perspiciatis enim, accusantium perferendis.</p>
-											<a href=""> Contact Us </a>
-										</div>
-									</div>
-									<div class="col-md-5 ">
-										<div class="img-box">
-											<img src="images/slider-img.png" alt="" />
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="carousel-item ">
-							<div class="container-fluid">
-								<div class="row">
-									<div class="col-md-7">
-										<div class="detail-box">
-											<h1>
-												Welcome To Our <br> Gift Shop
-											</h1>
-											<p>Sequi perspiciatis nulla reiciendis, rem, tenetur
-												impedit, eveniet non necessitatibus error distinctio
-												mollitia suscipit. Nostrum fugit doloribus consequatur
-												distinctio esse, possimus maiores aliquid repellat beatae
-												cum, perspiciatis enim, accusantium perferendis.</p>
-											<a href=""> Contact Us </a>
-										</div>
-									</div>
-									<div class="col-md-5 ">
-										<div class="img-box">
-											<img src="images/slider-img.png" alt="" />
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="carousel_btn-box">
-						<a class="carousel-control-prev" href="#carouselExampleIndicators"
-							role="button" data-slide="prev"> <i class="fa fa-arrow-left"
-							aria-hidden="true"></i> <span class="sr-only">Previous</span>
-						</a> <img src="images/line.png" alt="" /> <a
-							class="carousel-control-next" href="#carouselExampleIndicators"
-							role="button" data-slide="next"> <i class="fa fa-arrow-right"
-							aria-hidden="true"></i> <span class="sr-only">Next</span>
-						</a>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<!-- end slider section -->
 	</div>
 	<!-- end hero area -->
 
 	<!-- shop section -->
+	<!-- check if latestProducts is called -->
+	<c:if test="${not empty latestProducts}">
+		<section class="shop_section layout_padding">
+			<div class="container">
+				<div class="heading_container heading_center">
+					<h2>Latest Products</h2>
+				</div>
 
-	<section class="shop_section layout_padding">
-		<div class="container">
-			<div class="heading_container heading_center">
-				<h2>Latest Products</h2>
-			</div>
-
-			<div class="row">
-				<c:forEach items="${latestProducts}" var="product">
-					<div class="col-sm-6 col-md-4 col-lg-3">
-						<div class="box">
-							<a href="product-details.jsp?productId=${product.id}">
-								<div class="img-box">
-									<img src="images/${product.imgName}" alt="">
-								</div>
-								<div class="detail-box">
-									<h6>${product.name}</h6>
-									<h6>
-										Price <span> ${product.price} </span>
-									</h6>
-								</div>
-								<div class="new">
-									<span> New </span>
-								</div>
-							</a>
+				<div class="row">
+					<c:forEach items="${latestProducts}" var="product">
+						<div class="col-sm-6 col-md-4 col-lg-3">
+							<div class="box">
+								<a href="product-details.jsp?productId=${product.id}">
+									<div class="img-box">
+										<img src="images/${product.imgName}" alt="">
+									</div>
+									<div class="detail-box">
+										<h6>${product.name}</h6>
+										<h6>
+											Price <span> $${product.price} </span>
+										</h6>
+									</div>
+									<div class="new">
+										<span> New </span>
+									</div>
+								</a>
+							</div>
 						</div>
-					</div>
-				</c:forEach>
-			</div>
+					</c:forEach>
+				</div>
 
-		</div>
-		<div class="btn-box">
-			<a href="product-listing-page.jsp"> View All Products </a>
-		</div>
-		</div>
-	</section>
+			</div>
+			<div class="btn-box">
+				<a href="product-listing-page.jsp"> View All Products </a>
+			</div>
+		</section>
+	</c:if>
+
+	<!-- check if productListByCatId is called -->
+	<c:if test="${not empty productListByCatId}">
+		<section class="shop_section layout_padding">
+			<div class="container">
+				<div class="row">
+					<c:forEach items="${productListByCatId}" var="product">
+						<div class="col-sm-6 col-md-4 col-lg-3">
+							<div class="box">
+								<a href="product-details.jsp?productId=${product.id}">
+									<div class="img-box">
+										<img src="images/${product.imgName}" alt="">
+									</div>
+									<div class="detail-box">
+										<h6>${product.name}</h6>
+										<h6>
+											Price <span> $${product.price} </span>
+										</h6>
+									</div>
+								</a>
+							</div>
+						</div>
+					</c:forEach>
+				</div>
+			</div>
+		</section>
+	</c:if>
 
 	<!-- end shop section -->
 

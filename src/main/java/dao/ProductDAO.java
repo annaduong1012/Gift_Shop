@@ -81,4 +81,30 @@ public class ProductDAO {
 		}
 		return list;
 	}
+
+	// Write function to get products by categoryId
+	public static List<Product> getProductByCategoryId(int categoryId) throws SQLException {
+		Connection connection = DBConnection.makeConnection();
+		Statement stmt = connection.createStatement();
+
+		String SQL = "select p.id, name, price, img_name from product p\n"
+				+ "join category c on p.category_id = c.id\n"
+				+ "where c.id = ?;";
+		
+		PreparedStatement preStmt = connection.prepareStatement(SQL);
+		preStmt.setInt(1, categoryId);
+		ResultSet resultSet = preStmt.executeQuery();
+
+		List<Product> list = new ArrayList<Product>();
+
+		while (resultSet.next()) {
+			int id = resultSet.getInt("p.id");
+			String name = resultSet.getString("name");
+			int price = resultSet.getInt("price");
+			String imgName = resultSet.getString("img_name");
+			Product product = new Product(id, name, price, imgName);
+			list.add(product);
+		}
+		return list;
+	}
 }
