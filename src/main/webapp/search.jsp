@@ -64,7 +64,7 @@ pageContext.setAttribute("productBySearchQuery", ProductDAO.getProductBySearch(c
 
 				<!-- search bar -->
 				<div class="searchBar">
-					<form action="search.jsp" class="searchForm">
+					<form action="search.jsp" method="get" class="searchForm">
 						<div>
 							<input type="text" name="searchField"
 								placeholder="Search for product" />
