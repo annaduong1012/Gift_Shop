@@ -87,10 +87,9 @@ public class ProductDAO {
 		Connection connection = DBConnection.makeConnection();
 		Statement stmt = connection.createStatement();
 
-		String SQL = "select p.id, name, price, img_name from product p\n"
-				+ "join category c on p.category_id = c.id\n"
+		String SQL = "select p.id, name, price, img_name from product p\n" + "join category c on p.category_id = c.id\n"
 				+ "where c.id = ?;";
-		
+
 		PreparedStatement preStmt = connection.prepareStatement(SQL);
 		preStmt.setInt(1, categoryId);
 		ResultSet resultSet = preStmt.executeQuery();
@@ -99,6 +98,30 @@ public class ProductDAO {
 
 		while (resultSet.next()) {
 			int id = resultSet.getInt("p.id");
+			String name = resultSet.getString("name");
+			int price = resultSet.getInt("price");
+			String imgName = resultSet.getString("img_name");
+			Product product = new Product(id, name, price, imgName);
+			list.add(product);
+		}
+		return list;
+	}
+
+	// Write function to return result from search query
+	public static List<Product> getProductBySearch(String searchQuery) throws SQLException {
+		Connection connection = DBConnection.makeConnection();
+		Statement stmt = connection.createStatement();
+
+		String SQL = "select * from product\n" + "where name like ?;";
+
+		PreparedStatement preStmt = connection.prepareStatement(SQL);
+		preStmt.setString(1, searchQuery);
+		ResultSet resultSet = preStmt.executeQuery();
+
+		List<Product> list = new ArrayList<Product>();
+
+		while (resultSet.next()) {
+			int id = resultSet.getInt("id");
 			String name = resultSet.getString("name");
 			int price = resultSet.getInt("price");
 			String imgName = resultSet.getString("img_name");

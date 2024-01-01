@@ -11,21 +11,14 @@
 <html>
 
 <%
-// get category list to show in menu bar
+//get category list to show in menu bar
 CategoryDAO categoryDAO = new CategoryDAO();
 pageContext.setAttribute("categoryList", categoryDAO.showCategory());
 
-// If category id = null, show latest Product, if not null, show product list by category
-Integer categoryId = null;
-String categoryIdFromReq = request.getParameter("categoryId");
-ProductDAO productDAO = new ProductDAO();
-
-if (categoryIdFromReq == null || categoryIdFromReq.isEmpty()) {
-	pageContext.setAttribute("latestProducts", productDAO.getLatestProducts());
-} else {
-	categoryId = Integer.parseInt(categoryIdFromReq);
-	pageContext.setAttribute("productListByCatId", productDAO.getProductByCategoryId(categoryId));
-}
+// code to display search result
+String searchQuery = request.getParameter("searchField");
+String convertedSearchQuery = "%" + searchQuery + "%";
+pageContext.setAttribute("productBySearchQuery", ProductDAO.getProductBySearch(convertedSearchQuery));
 %>
 <head>
 <!-- Basic -->
@@ -71,7 +64,7 @@ if (categoryIdFromReq == null || categoryIdFromReq.isEmpty()) {
 
 				<!-- search bar -->
 				<div class="searchBar">
-					<form action="search.jsp" method="get" class="searchForm">
+					<form action="search.jsp" class="searchForm">
 						<div>
 							<input type="text" name="searchField"
 								placeholder="Search for product" />
@@ -87,7 +80,8 @@ if (categoryIdFromReq == null || categoryIdFromReq.isEmpty()) {
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav  ">
 						<li class="nav-item active"><a class="nav-link"
-							href="index.jsp">Home</a></li>
+							href="index.jsp">Home <span class="sr-only">(current)</span></a>
+						</li>
 						<c:forEach items="${categoryList}" var="category">
 							<li class="nav-item"><a class="nav-link"
 								href="index.jsp?categoryId=${category.id}"> ${category.name}
@@ -107,17 +101,15 @@ if (categoryIdFromReq == null || categoryIdFromReq.isEmpty()) {
 	</div>
 	<!-- end hero area -->
 
-	<!-- shop section -->
-	<!-- check if latestProducts is called -->
-	<c:if test="${not empty latestProducts}">
+	<!-- search result section -->
+	<c:if test="${not empty productBySearchQuery}">
 		<section class="shop_section layout_padding">
 			<div class="container">
 				<div class="heading_container heading_center">
-					<h2>Latest Products</h2>
+					<h2>Search Results</h2>
 				</div>
-
 				<div class="row">
-					<c:forEach items="${latestProducts}" var="product">
+					<c:forEach items="${productBySearchQuery}" var="product">
 						<div class="col-sm-6 col-md-4 col-lg-3">
 							<div class="box">
 								<a href="product-details.jsp?productId=${product.id}">
@@ -130,50 +122,26 @@ if (categoryIdFromReq == null || categoryIdFromReq.isEmpty()) {
 											Price <span> $${product.price} </span>
 										</h6>
 									</div>
-									<div class="new">
-										<span> New </span>
-									</div>
 								</a>
 							</div>
 						</div>
 					</c:forEach>
 				</div>
-
-			</div>
-			<div class="btn-box">
-				<a href="product-listing-page.jsp"> View All Products </a>
 			</div>
 		</section>
 	</c:if>
-
-	<!-- check if productListByCatId is called -->
-	<c:if test="${not empty productListByCatId}">
+	
+	<c:if test="${empty productBySearchQuery}">
 		<section class="shop_section layout_padding">
 			<div class="container">
-				<div class="row">
-					<c:forEach items="${productListByCatId}" var="product">
-						<div class="col-sm-6 col-md-4 col-lg-3">
-							<div class="box">
-								<a href="product-details.jsp?productId=${product.id}">
-									<div class="img-box">
-										<img src="images/${product.imgName}" alt="">
-									</div>
-									<div class="detail-box">
-										<h6>${product.name}</h6>
-										<h6>
-											Price <span> $${product.price} </span>
-										</h6>
-									</div>
-								</a>
-							</div>
-						</div>
-					</c:forEach>
+				<div class="heading_container heading_center">
+					<h2>No Search Results</h2>
 				</div>
 			</div>
 		</section>
 	</c:if>
 
-	<!-- end shop section -->
+	<!-- end search result section -->
 
 	<!-- saving section -->
 
