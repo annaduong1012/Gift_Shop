@@ -12,6 +12,7 @@ Welcome to the Gift Shop project! This practice project is designed to showcase 
 - [x] Add Java code to customise product details page to pull data from DB
 - [x] Design and implement code for "Product Listing Page"
 - [x] Implemented category list and get products by categoryId
-- [ ] Create Search Query function to pull search string from DB
-- [ ] Create section on index file to display the search result (using HTML,CSS and JS?)
-- [ ] How to send the search result as a response?
+- [x] Write Search Query function to pull search string from DB
+- [x] Create search.jsp to display search results
+ 
+
