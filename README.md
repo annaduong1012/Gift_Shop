@@ -14,5 +14,6 @@ Welcome to the Gift Shop project! This practice project is designed to showcase 
 - [x] Implemented category list and get products by categoryId
 - [x] Write Search Query function to pull search string from DB
 - [x] Create search.jsp to display search results
+- [ ] Update CSS to make search bar stretch across nav-bar
  
 
