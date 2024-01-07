@@ -1,3 +1,5 @@
+<%@page import="entity.User"%>
+<%@page import="dao.UserDAO"%>
 <%@page import="dao.CategoryDAO"%>
 <%@page import="entity.Category"%>
 <%@page import="java.util.List"%>
@@ -15,15 +17,22 @@
 CategoryDAO categoryDAO = new CategoryDAO();
 pageContext.setAttribute("categoryList", categoryDAO.showCategory());
 
-// If category id = null, show latest Product, if not null, show product list by category
-Integer categoryId = null;
-String categoryIdFromReq = request.getParameter("categoryId");
-ProductDAO productDAO = new ProductDAO();
+// Get userid and categoryid from payload
+String userId = request.getParameter("userId");
+String categoryId = request.getParameter("categoryId");
 
-if (categoryIdFromReq == null || categoryIdFromReq.isEmpty()) {
+// If category id = null, show latest Product, if not null, show product list by category
+// If userid != null, show welcome line
+ProductDAO productDAO = new ProductDAO();
+UserDAO userDAO = new UserDAO();
+
+if (userId != null) {
+	User currentUser = (User) session.getAttribute("user");
+	pageContext.setAttribute("currentUser", currentUser);
+}
+if (categoryId == null || categoryId.isEmpty()) {
 	pageContext.setAttribute("latestProducts", productDAO.getLatestProducts());
 } else {
-	categoryId = Integer.parseInt(categoryIdFromReq);
 	pageContext.setAttribute("productListByCatId", productDAO.getProductByCategoryId(categoryId));
 }
 %>
@@ -84,10 +93,10 @@ if (categoryIdFromReq == null || categoryIdFromReq.isEmpty()) {
 
 				<!-- end search bar -->
 
+
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav  ">
-						<li class="nav-item active"><a class="nav-link"
-							href="index.jsp">Home</a></li>
+						<li class="nav-item"><a class="nav-link" href="index.jsp">Home</a></li>
 						<c:forEach items="${categoryList}" var="category">
 							<li class="nav-item"><a class="nav-link"
 								href="index.jsp?categoryId=${category.id}"> ${category.name}
@@ -95,10 +104,13 @@ if (categoryIdFromReq == null || categoryIdFromReq.isEmpty()) {
 						</c:forEach>
 					</ul>
 					<div class="user_option">
-						<a href=""> <i class="fa fa-user" aria-hidden="true"></i> <span>
-								Login </span>
+						<a href="login.jsp"> <i class="fa fa-user" aria-hidden="true"></i>
+							<span> Login </span>
 						</a> <a href=""> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
 						</a>
+						<c:if test="${not empty currentUser}">
+							<span>Hi, ${currentUser.firstName}!</span>
+						</c:if>
 					</div>
 				</div>
 			</nav>

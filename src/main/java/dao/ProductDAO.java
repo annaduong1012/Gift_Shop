@@ -36,14 +36,14 @@ public class ProductDAO {
 	}
 
 	// write function to get product by ID
-	public static Product getProductById(int productId) throws SQLException {
+	public static Product getProductById(String productId) throws SQLException {
 		Connection connection = DBConnection.makeConnection();
 		Statement stmt = connection.createStatement();
 
 		String SQL = "select * from product where id = ?";
 
 		PreparedStatement preStmt = connection.prepareStatement(SQL);
-		preStmt.setInt(1, productId);
+		preStmt.setInt(1, Integer.parseInt(productId));
 
 		ResultSet resultSet = preStmt.executeQuery();
 
@@ -83,15 +83,15 @@ public class ProductDAO {
 	}
 
 	// Write function to get products by categoryId
-	public static List<Product> getProductByCategoryId(int categoryId) throws SQLException {
+	public static List<Product> getProductByCategoryId(String categoryId) throws SQLException {
 		Connection connection = DBConnection.makeConnection();
 		Statement stmt = connection.createStatement();
 
-		String SQL = "select p.id, name, price, img_name from product p\n" + "join category c on p.category_id = c.id\n"
-				+ "where c.id = ?;";
+		String SQL = "select p.id, name, price, img_name, category_name from product p\n"
+				+ "join category c on p.category_id = c.id\n" + "where c.id = ?;";
 
 		PreparedStatement preStmt = connection.prepareStatement(SQL);
-		preStmt.setInt(1, categoryId);
+		preStmt.setInt(1, Integer.parseInt(categoryId));
 		ResultSet resultSet = preStmt.executeQuery();
 
 		List<Product> list = new ArrayList<Product>();
@@ -101,7 +101,8 @@ public class ProductDAO {
 			String name = resultSet.getString("name");
 			int price = resultSet.getInt("price");
 			String imgName = resultSet.getString("img_name");
-			Product product = new Product(id, name, price, imgName);
+			String categoryName = resultSet.getString("category_name");
+			Product product = new Product(id, name, price, imgName, categoryName);
 			list.add(product);
 		}
 		return list;
@@ -115,7 +116,7 @@ public class ProductDAO {
 		String SQL = "select * from product\n" + "where name like ?;";
 
 		PreparedStatement preStmt = connection.prepareStatement(SQL);
-		preStmt.setString(1, searchQuery);
+		preStmt.setString(1, "%" + searchQuery + "%");
 		ResultSet resultSet = preStmt.executeQuery();
 
 		List<Product> list = new ArrayList<Product>();

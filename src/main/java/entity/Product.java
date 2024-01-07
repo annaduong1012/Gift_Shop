@@ -77,7 +77,15 @@ public class Product {
 		this.productDescription = productDescription;
 		this.quantiy = quantiy;
 	}
-	
+
+	public Product(int id, String name, int price, String imgName, String categoryName) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.price = price;
+		this.imgName = imgName;
+		this.categoryName = categoryName;
+	}
 
 	public Product(String categoryName) {
 		super();

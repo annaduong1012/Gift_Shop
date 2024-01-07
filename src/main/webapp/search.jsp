@@ -17,8 +17,7 @@ pageContext.setAttribute("categoryList", categoryDAO.showCategory());
 
 // code to display search result
 String searchQuery = request.getParameter("searchField");
-String convertedSearchQuery = "%" + searchQuery + "%";
-pageContext.setAttribute("productBySearchQuery", ProductDAO.getProductBySearch(convertedSearchQuery));
+pageContext.setAttribute("productBySearchQuery", ProductDAO.getProductBySearch(searchQuery));
 %>
 <head>
 <!-- Basic -->

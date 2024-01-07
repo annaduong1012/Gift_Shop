@@ -9,16 +9,8 @@
 <html>
 
 <%
-Integer productId = null;
 String productIdFromReq = request.getParameter("productId");
-
-//convert string to int
-if (productIdFromReq != null) {
-	productId = Integer.parseInt(productIdFromReq);
-}
-
-Product product = ProductDAO.getProductById(productId);
-pageContext.setAttribute("product", product);
+pageContext.setAttribute("product", ProductDAO.getProductById(productIdFromReq));
 %>
 <head>
 <!-- Basic -->
@@ -92,36 +84,36 @@ pageContext.setAttribute("product", product);
 		</header>
 		<!-- end header section -->
 
-	<!-- product details section -->
+		<!-- product details section -->
 
-	<section class="shop_section layout_padding">
-		<div class="container">
-			<div class="heading_container heading_center">
-				<h2>${product.name}</h2>
-			</div>
-			<div class="row">
+		<section class="shop_section layout_padding">
+			<div class="container">
+				<div class="heading_container heading_center">
+					<h2>${product.name}</h2>
+				</div>
+				<div class="row">
 
-				<div class="col-sm-6 col-md-4 col-lg-3">
-					<div class="box">
-						<a href="">
-							<div class="img-box">
-								<img src="images/${product.imgName}" alt="${product.name}">
-							</div>
-							<div class="detail-box"></div>
-						</a>
+					<div class="col-sm-6 col-md-4 col-lg-3">
+						<div class="box">
+							<a href="">
+								<div class="img-box">
+									<img src="images/${product.imgName}" alt="${product.name}">
+								</div>
+								<div class="detail-box"></div>
+							</a>
+						</div>
+					</div>
+
+					<div class="col-sm-6 col-md-4 col-lg-9">
+						<div class="box">
+							Price: $${product.price} <br> Description :
+							${product.productDescription} <br> Quantity:
+							${product.quantiy}
+						</div>
 					</div>
 				</div>
-
-				<div class="col-sm-6 col-md-4 col-lg-9">
-					<div class="box">
-						Price: $${product.price} <br> Description :
-						${product.productDescription} <br> Quantity:
-						${product.quantiy}
-					</div>
-				</div>
 			</div>
-		</div>
-		</div>
+	</div>
 	</section>
 
 	<!-- end product details section -->
