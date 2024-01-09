@@ -88,7 +88,7 @@ pageContext.setAttribute("productBySearchQuery", ProductDAO.getProductBySearch(s
 						</c:forEach>
 					</ul>
 					<div class="user_option">
-						<a href=""> <i class="fa fa-user" aria-hidden="true"></i> <span>
+						<a href="login.jsp"> <i class="fa fa-user" aria-hidden="true"></i> <span>
 								Login </span>
 						</a> <a href=""> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
 						</a>

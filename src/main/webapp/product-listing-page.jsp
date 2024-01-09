@@ -1,3 +1,4 @@
+<%@page import="dao.CategoryDAO"%>
 <%@page import="java.util.List"%>
 <%@page import="dao.ProductDAO"%>
 <%@page import="entity.Product"%>
@@ -9,6 +10,10 @@
 <html>
 
 <%
+// get category list to show in menu bar
+CategoryDAO categoryDAO = new CategoryDAO();
+pageContext.setAttribute("categoryList", categoryDAO.showCategory());
+
 ProductDAO productDAO = new ProductDAO();
 List<Product> products = productDAO.showAllProducts();
 
@@ -47,8 +52,7 @@ pageContext.setAttribute("allProducts", products);
 		<!-- header section strats -->
 		<header class="header_section">
 			<nav class="navbar navbar-expand-lg custom_nav-container ">
-				<a class="navbar-brand" href="index.jsp"> <span> Giftos
-				</span>
+				<a class="navbar-brand" href="index.jsp"> <span> Giftos </span>
 				</a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse"
 					data-target="#navbarSupportedContent"
@@ -57,30 +61,35 @@ pageContext.setAttribute("allProducts", products);
 					<span class=""></span>
 				</button>
 
-				<div class="collapse navbar-collapse" id="navbarSupportedContent">
-					<ul class="navbar-nav  ">
-						<li class="nav-item active"><a class="nav-link"
-							href="index.jsp">Home <span class="sr-only">(current)</span></a>
-						</li>
-						<li class="nav-item"><a class="nav-link" href="shop.jsp">
-								Shop </a></li>
-						<li class="nav-item"><a class="nav-link" href="why.jsp">
-								Why Us </a></li>
-						<li class="nav-item"><a class="nav-link"
-							href="testimonial.jsp"> Testimonial </a></li>
-						<li class="nav-item"><a class="nav-link" href="contact.jsp">Contact
-								Us</a></li>
-					</ul>
-					<div class="user_option">
-						<a href=""> <i class="fa fa-user" aria-hidden="true"></i> <span>
-								Login </span>
-						</a> <a href=""> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
-						</a>
-						<form class="form-inline ">
-							<button class="btn nav_search-btn" type="submit">
+				<!-- search bar -->
+				<div class="searchBar">
+					<form action="search.jsp" method="get" class="searchForm">
+						<div>
+							<input type="text" name="searchField"
+								placeholder="Search for product" />
+							<button class="searchBtn" type="submit">
 								<i class="fa fa-search" aria-hidden="true"></i>
 							</button>
-						</form>
+						</div>
+					</form>
+				</div>
+
+				<!-- end search bar -->
+
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav  ">
+						<li class="nav-item"><a class="nav-link" href="index.jsp">Home</a></li>
+						<c:forEach items="${categoryList}" var="category">
+							<li class="nav-item"><a class="nav-link"
+								href="index.jsp?categoryId=${category.id}"> ${category.name}
+							</a></li>
+						</c:forEach>
+					</ul>
+					<div class="user_option">
+						<a href="login.jsp"> <i class="fa fa-user" aria-hidden="true"></i>
+							<span> Login </span>
+						</a> <a href=""> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+						</a>
 					</div>
 				</div>
 			</nav>

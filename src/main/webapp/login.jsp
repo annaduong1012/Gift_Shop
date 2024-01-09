@@ -93,7 +93,7 @@ try {
 
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav  ">
-						<li class="nav-item active"><a class="nav-link"
+						<li class="nav-item"><a class="nav-link"
 							href="index.jsp">Home</a></li>
 						<c:forEach items="${categoryList}" var="category">
 							<li class="nav-item"><a class="nav-link"
@@ -102,8 +102,8 @@ try {
 						</c:forEach>
 					</ul>
 					<div class="user_option">
-						<a href=""> <i class="fa fa-user" aria-hidden="true"></i> <span>
-								Login </span>
+						<a href="login.jsp"> <i class="fa fa-user" aria-hidden="true"></i>
+							<span> Login </span>
 						</a> <a href=""> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
 						</a>
 					</div>
@@ -118,27 +118,37 @@ try {
 	<section class="shop_section layout_padding">
 		<div class="container">
 			<div class="heading_container heading_center">
-				<h2>My Account</h2>
+				<h2>Login to your account</h2>
 			</div>
 			<c:if test="${not empty errorMessage}">
 				<p style="color: red;">${errorMessage}</p>
 			</c:if>
 			<div>
 				<form method="post" class="loginForm">
-					<label for="username">Username</label><br> <input type="text"
-						name="userName" placeholder="Your username" /><br> <label
-						for="password">Password</label><br> <input type="text"
-						name="userPass" /><br>
-					<button class="loginBtn" type="submit">
-						<i class="fa fa-user" aria-hidden="true">Login now</i>
-					</button>
+					<div class="form-group">
+						<label for="userName">Username:</label> <input type="text"
+							name="userName" class="form-control" required>
+					</div>
+
+					<div class="form-group">
+						<label for="userPass">Password:</label> <input type="password"
+							name="userPass" class="form-control" required>
+					</div>
+
+					<div class="form-group">
+						<button class="loginBtn" type="submit">
+							<i class="fa fa-user" aria-hidden="true"></i> Login Now
+						</button>
+					</div>
 				</form>
+				<span>Don't have an account? <a href="register.jsp">Create
+						an account</a></span>
 			</div>
-
 		</div>
-
 	</section>
+
 	<!-- end login section -->
+
 	<!-- info section -->
 
 	<section class="info_section  layout_padding2-top">

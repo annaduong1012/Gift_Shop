@@ -20,6 +20,17 @@ public class User {
 		this.firstName = firstName;
 		this.lastName = lastName;
 	}
+	
+	
+
+	public User(String firstName, String lastName, String email, String userName, String userPassword) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.userName = userName;
+		this.userPassword = userPassword;
+	}
 
 	public int getId() {
 		return id;
