@@ -15,6 +15,7 @@ Welcome to the Gift Shop project! This practice project is designed to showcase 
 - [x] Write Search Query function to pull search string from DB
 - [x] Create search.jsp to display search results
 - [ ] Update CSS to make search bar stretch across nav-bar
+- [x] Create login function and redirect to index.jsp once login is successful
 - [ ] Update login logic to record session and keep the session till logged out
 - [ ] Implement logout function
 - [ ] Implement register function
