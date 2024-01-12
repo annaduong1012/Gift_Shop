@@ -45,6 +45,7 @@ public class HomeController extends HttpServlet {
 			List<Product> productList;
 			String categoryId = request.getParameter("categoryId");
 			String showAll = request.getParameter("action");
+			String searchQuery = request.getParameter("searchField");
 
 			if (("show_all_products").equals(showAll)) {
 				productList = productDAO.showAllProducts();
@@ -53,7 +54,6 @@ public class HomeController extends HttpServlet {
 			} else {
 				productList = productDAO.getProductByCategoryId(categoryId);
 			}
-			String searchQuery = request.getParameter("searchField");
 
 			// Send DATA to index.jsp
 			RequestDispatcher rd = request.getRequestDispatcher("/index.jsp");
