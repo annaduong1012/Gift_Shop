@@ -9,9 +9,6 @@
 <!DOCTYPE html>
 <html>
 
-<%
-
-%>
 <head>
 <!-- Basic -->
 <meta charset="utf-8" />

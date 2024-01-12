@@ -37,7 +37,6 @@ public class HomeController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		try {
 			// Use Model to get data
 			CategoryDAO categoryDAO = new CategoryDAO();
@@ -55,15 +54,6 @@ public class HomeController extends HttpServlet {
 				productList = productDAO.getProductByCategoryId(categoryId);
 			}
 			String searchQuery = request.getParameter("searchField");
-
-			// String userId = request.getParameter("userId");
-
-			// UserDAO userDAO = new UserDAO();
-
-			// if (userId != null) {
-			// User currentUser = (User) session.getAttribute("user");
-			// pageContext.setAttribute("currentUser", currentUser);
-			// }
 
 			// Send DATA to index.jsp
 			RequestDispatcher rd = request.getRequestDispatcher("/index.jsp");
