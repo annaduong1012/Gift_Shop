@@ -11,31 +11,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
-
-<%
-// get category list to show in menu bar
-CategoryDAO categoryDAO = new CategoryDAO();
-pageContext.setAttribute("categoryList", categoryDAO.showCategory());
-
-// Get userid and categoryid from payload
-String userId = request.getParameter("userId");
-String categoryId = request.getParameter("categoryId");
-
-// If category id = null, show latest Product, if not null, show product list by category
-// If userid != null, show welcome line
-ProductDAO productDAO = new ProductDAO();
-UserDAO userDAO = new UserDAO();
-
-if (userId != null) {
-	User currentUser = (User) session.getAttribute("user");
-	pageContext.setAttribute("currentUser", currentUser);
-}
-if (categoryId == null || categoryId.isEmpty()) {
-	pageContext.setAttribute("latestProducts", productDAO.getLatestProducts());
-} else {
-	pageContext.setAttribute("productListByCatId", productDAO.getProductByCategoryId(categoryId));
-}
-%>
 <head>
 <!-- Basic -->
 <meta charset="utf-8" />
@@ -69,7 +44,7 @@ if (categoryId == null || categoryId.isEmpty()) {
 		<!-- header section strats -->
 		<header class="header_section">
 			<nav class="navbar navbar-expand-lg custom_nav-container ">
-				<a class="navbar-brand" href="index.jsp"> <span> Giftos </span>
+				<a class="navbar-brand" href="Home"> <span> Giftos </span>
 				</a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse"
 					data-target="#navbarSupportedContent"
@@ -80,7 +55,7 @@ if (categoryId == null || categoryId.isEmpty()) {
 
 				<!-- search bar -->
 				<div class="searchBar">
-					<form action="search.jsp" method="get" class="searchForm">
+					<form action="Home" method="get" class="searchForm">
 						<div>
 							<input type="text" name="searchField"
 								placeholder="Search for product" />
@@ -90,22 +65,18 @@ if (categoryId == null || categoryId.isEmpty()) {
 						</div>
 					</form>
 				</div>
-
 				<!-- end search bar -->
-
-
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav  ">
-						<li class="nav-item"><a class="nav-link" href="index.jsp">Home</a></li>
+						<li class="nav-item"><a class="nav-link" href="Home">Home</a></li>
 						<c:forEach items="${categoryList}" var="category">
 							<li class="nav-item"><a class="nav-link"
-								href="index.jsp?categoryId=${category.id}"> ${category.name}
-							</a></li>
+								href="Home?categoryId=${category.id}"> ${category.name} </a></li>
 						</c:forEach>
 					</ul>
 					<div class="user_option">
-						<a href="login.jsp"> <i class="fa fa-user" aria-hidden="true"></i>
-							<span> Login </span>
+						<a href="account.jsp"> <i class="fa fa-user" aria-hidden="true"></i>
+							<span>Login</span>
 						</a> <a href=""> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
 						</a>
 						<c:if test="${not empty currentUser}">
@@ -120,19 +91,31 @@ if (categoryId == null || categoryId.isEmpty()) {
 	<!-- end hero area -->
 
 	<!-- shop section -->
-	<!-- check if latestProducts is called -->
-	<c:if test="${not empty latestProducts}">
+	<!-- Product List start-->
+	<c:if test="${not empty productList}">
 		<section class="shop_section layout_padding">
 			<div class="container">
 				<div class="heading_container heading_center">
-					<h2>Latest Products</h2>
+					<h2>
+						<c:choose>
+							<c:when test="${(showAll eq 'show_all_products')}">
+                            All Products
+                        </c:when>
+							<c:when
+								test="${empty categoryId && !(showAll eq 'show_all_products')}">
+                            Latest Products
+                        </c:when>
+							<c:otherwise>
+							Products
+                        </c:otherwise>
+						</c:choose>
+					</h2>
 				</div>
-
 				<div class="row">
-					<c:forEach items="${latestProducts}" var="product">
+					<c:forEach items="${productList}" var="product">
 						<div class="col-sm-6 col-md-4 col-lg-3">
 							<div class="box">
-								<a href="product-details.jsp?productId=${product.id}">
+								<a href="Product?productId=${product.id}">
 									<div class="img-box">
 										<img src="images/${product.imgName}" alt="">
 									</div>
@@ -141,10 +124,11 @@ if (categoryId == null || categoryId.isEmpty()) {
 										<h6>
 											Price <span> $${product.price} </span>
 										</h6>
-									</div>
-									<div class="new">
-										<span> New </span>
-									</div>
+									</div> <c:if test="${product.isNew}">
+										<div class="new">
+											<span> New </span>
+										</div>
+									</c:if>
 								</a>
 							</div>
 						</div>
@@ -153,17 +137,21 @@ if (categoryId == null || categoryId.isEmpty()) {
 
 			</div>
 			<div class="btn-box">
-				<a href="product-listing-page.jsp"> View All Products </a>
+				<a href="Home?action=show_all_products"> View All Products </a>
 			</div>
 		</section>
 	</c:if>
+	<!-- Product List end-->
 
-	<!-- check if productListByCatId is called -->
-	<c:if test="${not empty productListByCatId}">
+	<!-- search result section start-->
+	<c:if test="${not empty productBySearchQuery}">
 		<section class="shop_section layout_padding">
 			<div class="container">
+				<div class="heading_container heading_center">
+					<h2>Search Results</h2>
+				</div>
 				<div class="row">
-					<c:forEach items="${productListByCatId}" var="product">
+					<c:forEach items="${productBySearchQuery}" var="product">
 						<div class="col-sm-6 col-md-4 col-lg-3">
 							<div class="box">
 								<a href="product-details.jsp?productId=${product.id}">
@@ -185,7 +173,17 @@ if (categoryId == null || categoryId.isEmpty()) {
 		</section>
 	</c:if>
 
-	<!-- end shop section -->
+	<c:if test="${empty productBySearchQuery && empty productList}">
+		<section class="shop_section layout_padding">
+			<div class="container">
+				<div class="heading_container heading_center">
+					<h2>No Search Results</h2>
+				</div>
+			</div>
+		</section>
+	</c:if>
+
+	<!-- search result section end-->
 
 	<!-- saving section -->
 

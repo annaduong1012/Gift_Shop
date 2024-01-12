@@ -24,7 +24,6 @@ public class UserDAO {
 		}
 
 		Connection connection = DBConnection.makeConnection();
-		Statement stmt = connection.createStatement();
 
 		String checkIfUserExistSQL = "select * from user where username = ?;";
 
@@ -42,21 +41,21 @@ public class UserDAO {
 			currentUser.setFailedLogin(resultSet.getInt("failed_login"));
 
 			if (currentUser.getFailedLogin() >= 3) {
-				request.setAttribute("errorMessage",
+				request.setAttribute("loginErrorMessage",
 						"Your account has been locked. Please contact Support to unlock your account.");
 			} else if (userPassword.equals(currentUser.getUserPassword())) {
 				request.setAttribute("welcomeMessage",
 						"Welcome " + currentUser.getFirstName() + "! You have logged in successfully.");
 				return currentUser;
 			} else {
-				request.setAttribute("errorMessage", "Invalid password. Please try again");
+				request.setAttribute("loginErrorMessage", "Invalid password. Please try again");
 				int failedCount = currentUser.getFailedLogin() + 1;
 				currentUser.setFailedLogin(failedCount);
 				// Update failed count
 				updateFailedCount(userName, failedCount);
 			}
 		} else {
-			request.setAttribute("errorMessage", "Invalid Account, please try again");
+			request.setAttribute("loginErrorMessage", "Invalid Account, please try again");
 		}
 		return null;
 	}
@@ -77,7 +76,6 @@ public class UserDAO {
 	// Get user details from userID
 	public static User getUserById(String userId) throws SQLException {
 		Connection connection = DBConnection.makeConnection();
-		Statement stmt = connection.createStatement();
 
 		String SQL = "select * from user where id = ?";
 
@@ -106,7 +104,6 @@ public class UserDAO {
 		}
 
 		Connection connection = DBConnection.makeConnection();
-		Statement stmt = connection.createStatement();
 
 		String checkIfUserExistSQL = "select * from user where username = ?;";
 
@@ -117,7 +114,7 @@ public class UserDAO {
 
 		// Validate if user existed, if not add new account
 		if (resultSet.next()) {
-			request.setAttribute("errorMessage",
+			request.setAttribute("registerWelcomeMessage",
 					"Account already existed. Please register with a different username or login.");
 		} else {
 			String addUserSQL = "INSERT INTO user (first_name, last_name, email, username, password) VALUES (?,?,?,?,?);";
@@ -131,9 +128,9 @@ public class UserDAO {
 			int rowsAffected = addUserStmt.executeUpdate();
 
 			if (rowsAffected > 0) {
-				request.setAttribute("welcomeMessage", "Welcome " + firstName + "! Account Registered Successfully!");
+				request.setAttribute("registerWelcomeMessage", "Welcome " + firstName + "! Account Registered Successfully!");
 			} else {
-				request.setAttribute("errorMessage", "Failed to register the account.");
+				request.setAttribute("registerErrorMessage", "Failed to register the account.");
 			}
 
 		}

@@ -12,28 +12,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
-
-<%
-// get category list to show in menu bar
-CategoryDAO categoryDAO = new CategoryDAO();
-pageContext.setAttribute("categoryList", categoryDAO.showCategory());
-
-//login function
-String userName = request.getParameter("userName");
-String userPass = request.getParameter("userPass");
-
-try {
-	User user = UserDAO.validAccount(userName, userPass, request);
-	if (user != null) {
-		request.getSession().setAttribute("user", user);
-		response.sendRedirect("index.jsp?userId=" + user.getId());
-		return;
-	}
-} catch (SQLException e) {
-	e.printStackTrace();
-	request.setAttribute("errorMessage", "An error occurred. Please try again later.");
-}
-%>
 <head>
 <!-- Basic -->
 <meta charset="utf-8" />
@@ -67,7 +45,7 @@ try {
 		<!-- header section strats -->
 		<header class="header_section">
 			<nav class="navbar navbar-expand-lg custom_nav-container ">
-				<a class="navbar-brand" href="index.jsp"> <span> Giftos </span>
+				<a class="navbar-brand" href="Home"> <span> Giftos </span>
 				</a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse"
 					data-target="#navbarSupportedContent"
@@ -78,7 +56,7 @@ try {
 
 				<!-- search bar -->
 				<div class="searchBar">
-					<form action="search.jsp" method="get" class="searchForm">
+					<form action="Home" method="get" class="searchForm">
 						<div>
 							<input type="text" name="searchField"
 								placeholder="Search for product" />
@@ -93,17 +71,11 @@ try {
 
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav  ">
-						<li class="nav-item"><a class="nav-link"
-							href="index.jsp">Home</a></li>
-						<c:forEach items="${categoryList}" var="category">
-							<li class="nav-item"><a class="nav-link"
-								href="index.jsp?categoryId=${category.id}"> ${category.name}
-							</a></li>
-						</c:forEach>
+						<li class="nav-item"><a class="nav-link" href="Home">Home</a></li>
 					</ul>
 					<div class="user_option">
-						<a href="login.jsp"> <i class="fa fa-user" aria-hidden="true"></i>
-							<span> Login </span>
+						<a href="account.jsp"> <i class="fa fa-user"
+							aria-hidden="true"></i> <span> Login </span>
 						</a> <a href=""> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
 						</a>
 					</div>
@@ -115,16 +87,16 @@ try {
 	<!-- end hero area -->
 
 	<!-- login section -->
-	<section class="shop_section layout_padding">
+	<section class="shop_section layout_padding" id="login">
 		<div class="container">
 			<div class="heading_container heading_center">
 				<h2>Login to your account</h2>
 			</div>
-			<c:if test="${not empty errorMessage}">
-				<p style="color: red;">${errorMessage}</p>
+			<c:if test="${not empty loginErrorMessage}">
+				<p style="color: red;">${loginErrorMessage}</p>
 			</c:if>
 			<div>
-				<form method="post" class="loginForm">
+				<form action="Account?action=login" method="post" class="loginForm">
 					<div class="form-group">
 						<label for="userName">Username:</label> <input type="text"
 							name="userName" class="form-control" required>
@@ -141,14 +113,65 @@ try {
 						</button>
 					</div>
 				</form>
-				<span>Don't have an account? <a href="register.jsp">Create
+				<span>Don't have an account? <a href="#register">Create
 						an account</a></span>
 			</div>
 		</div>
 	</section>
-
 	<!-- end login section -->
 
+	<!-- register section -->
+	<section class="shop_section layout_padding" id="register">
+		<div class="container">
+			<div class="heading_container heading_center">
+				<h2>Register a new account</h2>
+			</div>
+			<c:if test="${not empty registerErrorMessage}">
+				<p style="color: red;">${registerErrorMessage}</p>
+			</c:if>
+			<c:if test="${not empty registerWelcomeMessage}">
+				<p style="color: red;">${registerWelcomeMessage}</p>
+			</c:if>
+			<div>
+				<form action="Account?action=register" method="post"
+					class="registerForm">
+					<div class="form-group">
+						<label for="userFirstName">First Name:</label> <input type="text"
+							name="userFirstName" class="form-control" required>
+					</div>
+
+					<div class="form-group">
+						<label for="userLastName">Last Name:</label> <input type="text"
+							name="userLastName" class="form-control" required>
+					</div>
+
+					<div class="form-group">
+						<label for="userEmail">Email:</label> <input type="email"
+							name="userEmail" class="form-control" required>
+					</div>
+
+					<div class="form-group">
+						<label for="userName">Username:</label> <input type="text"
+							name="userName" class="form-control" required>
+					</div>
+
+					<div class="form-group">
+						<label for="userPass">Password:</label> <input type="password"
+							name="userPass" class="form-control" required>
+					</div>
+
+					<div class="form-group">
+						<button class="registerBtn" type="submit">
+							<i class="fa fa-user" aria-hidden="true"></i> Register Now
+						</button>
+					</div>
+				</form>
+				<span>Already had an account? Log in <a href="#login">here</a></span>
+			</div>
+		</div>
+	</section>
+
+	<!-- end register section -->
 	<!-- info section -->
 
 	<section class="info_section  layout_padding2-top">

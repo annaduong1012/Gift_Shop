@@ -12,7 +12,7 @@ import entity.Product;
 import sql.connection.DBConnection;
 
 public class ProductDAO {
-	public List<Product> getLatestProducts() throws SQLException {
+	public static List<Product> getLatestProducts() throws SQLException {
 
 		// connect to mySQL Server
 		Connection connection = DBConnection.makeConnection();
@@ -53,9 +53,10 @@ public class ProductDAO {
 			int price = resultSet.getInt("price");
 			String imgName = resultSet.getString("img_name");
 			String productDescription = resultSet.getString("description");
-			int quantiy = resultSet.getInt("quantity");
+			int quantity = resultSet.getInt("quantity");
+			boolean isNew = resultSet.getBoolean("is_new");
 
-			Product product = new Product(id, name, price, imgName, productDescription, quantiy);
+			Product product = new Product(id, name, price, imgName, isNew, productDescription, quantity);
 			return product;
 		}
 		return null;

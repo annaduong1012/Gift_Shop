@@ -10,12 +10,7 @@
 <html>
 
 <%
-//get category list to show in menu bar
-CategoryDAO categoryDAO = new CategoryDAO();
-pageContext.setAttribute("categoryList", categoryDAO.showCategory());
 
-String productIdFromReq = request.getParameter("productId");
-pageContext.setAttribute("product", ProductDAO.getProductById(productIdFromReq));
 %>
 <head>
 <!-- Basic -->
@@ -47,10 +42,10 @@ pageContext.setAttribute("product", ProductDAO.getProductById(productIdFromReq))
 
 <body>
 	<div class="hero_area">
-		<!-- header section strats -->
+		<!-- header section starts -->
 		<header class="header_section">
 			<nav class="navbar navbar-expand-lg custom_nav-container ">
-				<a class="navbar-brand" href="index.jsp"> <span> Giftos </span>
+				<a class="navbar-brand" href="Home"> <span> Giftos </span>
 				</a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse"
 					data-target="#navbarSupportedContent"
@@ -60,7 +55,7 @@ pageContext.setAttribute("product", ProductDAO.getProductById(productIdFromReq))
 				</button>
 				<!-- search bar -->
 				<div class="searchBar">
-					<form action="search.jsp" method="get" class="searchForm">
+					<form action="Home" method="get" class="searchForm">
 						<div>
 							<input type="text" name="searchField"
 								placeholder="Search for product" />
@@ -72,19 +67,17 @@ pageContext.setAttribute("product", ProductDAO.getProductById(productIdFromReq))
 				</div>
 
 				<!-- end search bar -->
-
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav  ">
-						<li class="nav-item"><a class="nav-link" href="index.jsp">Home</a></li>
+						<li class="nav-item"><a class="nav-link" href="Home">Home</a></li>
 						<c:forEach items="${categoryList}" var="category">
 							<li class="nav-item"><a class="nav-link"
-								href="index.jsp?categoryId=${category.id}"> ${category.name}
-							</a></li>
+								href="Home?categoryId=${category.id}"> ${category.name} </a></li>
 						</c:forEach>
 					</ul>
 					<div class="user_option">
 						<a href="login.jsp"> <i class="fa fa-user" aria-hidden="true"></i>
-							<span> Login </span>
+							<span>Login</span>
 						</a> <a href=""> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
 						</a>
 					</div>
@@ -98,7 +91,7 @@ pageContext.setAttribute("product", ProductDAO.getProductById(productIdFromReq))
 		<section class="shop_section layout_padding">
 			<div class="container">
 				<div class="heading_container heading_center">
-					<h2>${product.name}</h2>
+					<h2>${productDetails.name}</h2>
 				</div>
 				<div class="row">
 
@@ -106,7 +99,8 @@ pageContext.setAttribute("product", ProductDAO.getProductById(productIdFromReq))
 						<div class="box">
 							<a href="">
 								<div class="img-box">
-									<img src="images/${product.imgName}" alt="${product.name}">
+									<img src="images/${productDetails.imgName}"
+										alt="${productDetails.name}">
 								</div>
 								<div class="detail-box"></div>
 							</a>
@@ -115,9 +109,9 @@ pageContext.setAttribute("product", ProductDAO.getProductById(productIdFromReq))
 
 					<div class="col-sm-6 col-md-4 col-lg-9">
 						<div class="box">
-							Price: $${product.price} <br> Description :
-							${product.productDescription} <br> Quantity:
-							${product.quantiy}
+							Price: $${productDetails.price} <br> Description :
+							${productDetails.productDescription} <br> Quantity:
+							${productDetails.quantiy}
 						</div>
 					</div>
 				</div>

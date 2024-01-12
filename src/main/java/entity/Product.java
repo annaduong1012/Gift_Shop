@@ -120,6 +120,10 @@ public class Product {
 		return isNew;
 	}
 
+	public boolean getIsNew() {
+		return isNew;
+	}
+
 	public void setNew(boolean isNew) {
 		this.isNew = isNew;
 	}
