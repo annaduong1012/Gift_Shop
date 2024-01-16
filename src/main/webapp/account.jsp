@@ -96,7 +96,7 @@
 				<p style="color: red;">${loginErrorMessage}</p>
 			</c:if>
 			<div>
-				<form action="Account?action=login" method="post" class="loginForm">
+				<form action="Account?action=LOGIN" method="post" class="loginForm">
 					<div class="form-group">
 						<label for="userName">Username:</label> <input type="text"
 							name="userName" class="form-control" required>
@@ -133,7 +133,7 @@
 				<p style="color: red;">${registerWelcomeMessage}</p>
 			</c:if>
 			<div>
-				<form action="Account?action=register" method="post"
+				<form action="Account?action=REGISTER" method="post"
 					class="registerForm">
 					<div class="form-group">
 						<label for="userFirstName">First Name:</label> <input type="text"

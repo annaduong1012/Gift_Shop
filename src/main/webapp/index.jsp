@@ -55,7 +55,7 @@
 
 				<!-- search bar -->
 				<div class="searchBar">
-					<form action="Home" method="get" class="searchForm">
+					<form action="Home?action=SEARCH" method="get" class="searchForm">
 						<div>
 							<input type="text" name="searchField"
 								placeholder="Search for product" />
@@ -71,16 +71,19 @@
 						<li class="nav-item"><a class="nav-link" href="Home">Home</a></li>
 						<c:forEach items="${categoryList}" var="category">
 							<li class="nav-item"><a class="nav-link"
-								href="Home?categoryId=${category.id}"> ${category.name} </a></li>
+								href="Home?action=SHOW_PRODUCT_BY_CATEGORY&categoryId=${category.id}">
+									${category.name} </a></li>
 						</c:forEach>
 					</ul>
 					<div class="user_option">
-						<a href="account.jsp"> <i class="fa fa-user" aria-hidden="true"></i>
-							<span>Login</span>
+						<a href="account.jsp"> <i class="fa fa-user"
+							aria-hidden="true"></i> <span>Login</span>
 						</a> <a href=""> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
 						</a>
-						<c:if test="${not empty currentUser}">
-							<span>Hi, ${currentUser.firstName}!</span>
+						<c:if test="${not empty sessionScope.user}">
+							<span>Welcome, ${user.firstName}!</span>
+							<a href="account.jsp?action=LOGOUT"> <i class="fa fa-user"
+							aria-hidden="true"></i> <span>Logout</span>
 						</c:if>
 					</div>
 				</div>
@@ -98,15 +101,14 @@
 				<div class="heading_container heading_center">
 					<h2>
 						<c:choose>
-							<c:when test="${(showAll eq 'show_all_products')}">
+							<c:when test="${(action eq 'SHOW_ALL_PRODUCTS')}">
                             All Products
                         </c:when>
-							<c:when
-								test="${empty categoryId && !(showAll eq 'show_all_products')}">
-                            Latest Products
+							<c:when test="${(action eq 'SHOW_PRODUCT_BY_CATEGORY')}">
+                            Products
                         </c:when>
 							<c:otherwise>
-							Products
+							Latest Products
                         </c:otherwise>
 						</c:choose>
 					</h2>
@@ -137,14 +139,14 @@
 
 			</div>
 			<div class="btn-box">
-				<a href="Home?action=show_all_products"> View All Products </a>
+				<a href="Home?action=SHOW_ALL_PRODUCTS"> View All Products </a>
 			</div>
 		</section>
 	</c:if>
 	<!-- Product List end-->
 
 	<!-- search result section start-->
-	<c:if test="${not empty productBySearchQuery}">
+	<c:if test="${(action eq 'SEARCH')}">
 		<section class="shop_section layout_padding">
 			<div class="container">
 				<div class="heading_container heading_center">
@@ -173,7 +175,7 @@
 		</section>
 	</c:if>
 
-	<c:if test="${empty productBySearchQuery && empty productList}">
+	<c:if test="${(action eq 'SEARCH') && productList == null}">
 		<section class="shop_section layout_padding">
 			<div class="container">
 				<div class="heading_container heading_center">

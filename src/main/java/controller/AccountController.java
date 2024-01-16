@@ -19,10 +19,9 @@ import entity.User;
 @WebServlet("/Account")
 public class AccountController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	UserDAO userDAO = new UserDAO();
+	User user;
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
 	public AccountController() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -32,11 +31,6 @@ public class AccountController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-	}
-
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
@@ -48,39 +42,61 @@ public class AccountController extends HttpServlet {
 			String userName = request.getParameter("userName");
 			String userPass = request.getParameter("userPass");
 
-			User currentUser = UserDAO.validAccount(userName, userPass, request);
 			String action = request.getParameter("action");
 
-			if (("login".equals(action))) {
-				if (currentUser != null) {
-					RequestDispatcher rd = request.getRequestDispatcher("Home");
-					request.getSession().setAttribute("currentUser", currentUser);
-					rd.forward(request, response);
-					return;
-				} else {
-					RequestDispatcher rd = request.getRequestDispatcher("account.jsp");
-					rd.forward(request, response);
-				}
-			} else if (("register".equals(action))) {
+			if (action == null) {
+				action = "DEFAULT";
+			}
+
+			switch (action) {
+			case "LOGIN": {
+				user = UserDAO.validAccount(userName, userPass, request);
+				dispatchToView(request, response);
+				break;
+			}
+			case "REGISTER": {
 				String firstName = request.getParameter("userFirstName");
 				String lastName = request.getParameter("userLastName");
 				String email = request.getParameter("userEmail");
 
-				User newUser = UserDAO.registerNewUser(firstName, lastName, email, userName, userPass, request);
-				if (newUser != null) {
-					RequestDispatcher rd = request.getRequestDispatcher("Home");
-					request.getSession().setAttribute("newUser", newUser);
-					rd.forward(request, response);
-					return;
-				} else {
-	                RequestDispatcher rd = request.getRequestDispatcher("account.jsp");
-	                rd.forward(request, response);
-	            }
+				user = UserDAO.registerNewUser(firstName, lastName, email, userName, userPass, request);
+				dispatchToView(request, response);
+				break;
+			}
+			case "LOGOUT": {
+				request.getSession().invalidate();
+				response.sendRedirect("Home");
+			}
+			default: {
+				return;
+			}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 
 		}
+	}
+
+	private void dispatchToView(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		if (user != null) {
+			dispatchSuccessAttempt(request, response);
+		} else {
+			dispatchFailedAttempt(request, response);
+		}
+	}
+
+	private void dispatchSuccessAttempt(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		RequestDispatcher rd = request.getRequestDispatcher("Home");
+		request.getSession().setAttribute("user", user);
+		rd.forward(request, response);
+	}
+
+	private void dispatchFailedAttempt(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		RequestDispatcher rd = request.getRequestDispatcher("account.jsp");
+		rd.forward(request, response);
 	}
 
 }

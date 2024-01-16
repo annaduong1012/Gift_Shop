@@ -22,6 +22,10 @@ import entity.Product;
 @WebServlet("/Home")
 public class HomeController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	CategoryDAO categoryDAO = new CategoryDAO();
+	ProductDAO productDAO = new ProductDAO();
+	List<Category> categoryList;
+	List<Product> productList;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -38,35 +42,35 @@ public class HomeController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
-			// Use Model to get data
-			CategoryDAO categoryDAO = new CategoryDAO();
-			ProductDAO productDAO = new ProductDAO();
-			List<Category> categoryList = CategoryDAO.showCategory();
-			List<Product> productList;
-			String categoryId = request.getParameter("categoryId");
-			String showAll = request.getParameter("action");
-			String searchQuery = request.getParameter("searchField");
+			categoryList = CategoryDAO.showCategory();
+			String action = request.getParameter("action");
 
-			if (("show_all_products").equals(showAll)) {
+			if (action == null) {
+				action = "DEFAULT";
+			}
+			switch (action) {
+			case "SHOW_ALL_PRODUCTS": {
 				productList = productDAO.showAllProducts();
-			} else if (categoryId == null || categoryId.isEmpty()) {
-				productList = productDAO.getLatestProducts();
-			} else {
+				break;
+			}
+			case "SHOW_PRODUCT_BY_CATEGORY": {
+				String categoryId = request.getParameter("categoryId");
 				productList = productDAO.getProductByCategoryId(categoryId);
+				break;
+			}
+			case "SEARCH": {
+				String searchQuery = request.getParameter("searchField");
+				productList = ProductDAO.getProductBySearch(searchQuery);
+				break;
+			}
+			default: {
+				productList = productDAO.getLatestProducts();
+				break;
+			}
 			}
 
 			// Send DATA to index.jsp
-			RequestDispatcher rd = request.getRequestDispatcher("/index.jsp");
-			request.setAttribute("categoryList", categoryList);
-			if (searchQuery != null && !searchQuery.isEmpty()) {
-				request.setAttribute("productBySearchQuery", ProductDAO.getProductBySearch(searchQuery));
-			} else {
-				request.setAttribute("productList", productList);
-				request.setAttribute("categoryId", categoryId);
-				request.setAttribute("showAll", showAll);
-
-			}
-			rd.forward(request, response);
+			dispatchAttributeToView(request, response);
 		} catch (
 
 		SQLException e) {
@@ -86,4 +90,11 @@ public class HomeController extends HttpServlet {
 		doGet(request, response);
 	}
 
+	private void dispatchAttributeToView(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, ServletException, IOException {
+		RequestDispatcher rd = request.getRequestDispatcher("/index.jsp");
+		request.setAttribute("categoryList", categoryList);
+		request.setAttribute("productList", productList);
+		rd.forward(request, response);
+	}
 }
