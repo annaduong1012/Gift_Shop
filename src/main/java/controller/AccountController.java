@@ -31,9 +31,6 @@ public class AccountController extends HttpServlet {
 			throws ServletException, IOException {
 
 		try {
-			String userName = request.getParameter("userName");
-			String userPass = request.getParameter("userPass");
-
 			String action = request.getParameter("action");
 
 			if (action == null) {
@@ -42,22 +39,19 @@ public class AccountController extends HttpServlet {
 
 			switch (action) {
 			case "LOGIN": {
-				user = UserDAO.validAccount(userName, userPass, request);
+				user = validUser(request, response);
 				dispatchToView(request, response);
 				break;
 			}
 			case "REGISTER": {
-				String firstName = request.getParameter("userFirstName");
-				String lastName = request.getParameter("userLastName");
-				String email = request.getParameter("userEmail");
-
-				user = UserDAO.registerNewUser(firstName, lastName, email, userName, userPass, request);
+				user = registeredUser(request, response);
 				dispatchToView(request, response);
 				break;
 			}
 			case "LOGOUT": {
 				request.getSession().invalidate();
 				response.sendRedirect("Home");
+				break;
 			}
 			default: {
 				return;
@@ -67,6 +61,23 @@ public class AccountController extends HttpServlet {
 			e.printStackTrace();
 
 		}
+	}
+
+	private User validUser(HttpServletRequest request, HttpServletResponse response) throws SQLException {
+		String userName = request.getParameter("userName");
+		String userPass = request.getParameter("userPass");
+
+		return UserDAO.validAccount(userName, userPass, request);
+	}
+
+	private User registeredUser(HttpServletRequest request, HttpServletResponse response) throws SQLException {
+		String userName = request.getParameter("userName");
+		String userPass = request.getParameter("userPass");
+		String firstName = request.getParameter("userFirstName");
+		String lastName = request.getParameter("userLastName");
+		String email = request.getParameter("userEmail");
+
+		return UserDAO.registerNewUser(firstName, lastName, email, userName, userPass, request);
 	}
 
 	private void dispatchToView(HttpServletRequest request, HttpServletResponse response)
