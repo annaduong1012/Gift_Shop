@@ -82,7 +82,7 @@
 						</a>
 						<c:if test="${not empty sessionScope.user}">
 							<span>Welcome, ${user.firstName}!</span>
-							<a href="account.jsp?action=LOGOUT"> <i class="fa fa-user"
+							<a href="Account?action=LOGOUT"> <i class="fa fa-user"
 							aria-hidden="true"></i> <span>Logout</span>
 						</c:if>
 					</div>

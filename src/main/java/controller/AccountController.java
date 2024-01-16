@@ -27,6 +27,18 @@ public class AccountController extends HttpServlet {
 		// TODO Auto-generated constructor stub
 	}
 
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//		String action = request.getParameter("action");
+//		
+//		if (("LOGOUT").equals(action)) {
+//			request.getSession().invalidate();
+//			response.sendRedirect("Home");
+//		} else {
+//			return;
+//		}
+		
+	}
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
