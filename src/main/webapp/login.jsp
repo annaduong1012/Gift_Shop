@@ -74,8 +74,8 @@
 						<li class="nav-item"><a class="nav-link" href="Home">Home</a></li>
 					</ul>
 					<div class="user_option">
-						<a href="account.jsp"> <i class="fa fa-user"
-							aria-hidden="true"></i> <span> Login </span>
+						<a href="login.jsp"> <i class="fa fa-user" aria-hidden="true"></i>
+							<span> Login </span>
 						</a> <a href=""> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
 						</a>
 					</div>
@@ -96,7 +96,8 @@
 				<p style="color: red;">${loginErrorMessage}</p>
 			</c:if>
 			<div>
-				<form action="Account?action=LOGIN" method="post" class="loginForm">
+				<form action="Authentication?action=LOGIN" method="post" class="loginForm">
+					<input hidden="true" value="LOGIN" name="action">
 					<div class="form-group">
 						<label for="userName">Username:</label> <input type="text"
 							name="userName" class="form-control" required>
@@ -113,65 +114,12 @@
 						</button>
 					</div>
 				</form>
-				<span>Don't have an account? <a href="#register">Create
+				<span>Don't have an account? <a href="register.jsp">Create
 						an account</a></span>
 			</div>
 		</div>
 	</section>
 	<!-- end login section -->
-
-	<!-- register section -->
-	<section class="shop_section layout_padding" id="register">
-		<div class="container">
-			<div class="heading_container heading_center">
-				<h2>Register a new account</h2>
-			</div>
-			<c:if test="${not empty registerErrorMessage}">
-				<p style="color: red;">${registerErrorMessage}</p>
-			</c:if>
-			<c:if test="${not empty registerWelcomeMessage}">
-				<p style="color: red;">${registerWelcomeMessage}</p>
-			</c:if>
-			<div>
-				<form action="Account?action=REGISTER" method="post"
-					class="registerForm">
-					<div class="form-group">
-						<label for="userFirstName">First Name:</label> <input type="text"
-							name="userFirstName" class="form-control" required>
-					</div>
-
-					<div class="form-group">
-						<label for="userLastName">Last Name:</label> <input type="text"
-							name="userLastName" class="form-control" required>
-					</div>
-
-					<div class="form-group">
-						<label for="userEmail">Email:</label> <input type="email"
-							name="userEmail" class="form-control" required>
-					</div>
-
-					<div class="form-group">
-						<label for="userName">Username:</label> <input type="text"
-							name="userName" class="form-control" required>
-					</div>
-
-					<div class="form-group">
-						<label for="userPass">Password:</label> <input type="password"
-							name="userPass" class="form-control" required>
-					</div>
-
-					<div class="form-group">
-						<button class="registerBtn" type="submit">
-							<i class="fa fa-user" aria-hidden="true"></i> Register Now
-						</button>
-					</div>
-				</form>
-				<span>Already had an account? Log in <a href="#login">here</a></span>
-			</div>
-		</div>
-	</section>
-
-	<!-- end register section -->
 	<!-- info section -->
 
 	<section class="info_section  layout_padding2-top">

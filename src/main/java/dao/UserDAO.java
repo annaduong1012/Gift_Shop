@@ -19,9 +19,9 @@ public class UserDAO {
 			throws SQLException {
 
 		// if this is not a POST request, ignore error message
-		if (!"POST".equalsIgnoreCase(request.getMethod())) {
-			return null;
-		}
+		//if (!"POST".equalsIgnoreCase(request.getMethod())) {
+		//	return null;
+		//}
 
 		Connection connection = DBConnection.makeConnection();
 

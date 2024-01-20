@@ -55,8 +55,9 @@
 
 				<!-- search bar -->
 				<div class="searchBar">
-					<form action="Home?action=SEARCH" method="get" class="searchForm">
+					<form action="Home" method="get" class="searchForm">
 						<div>
+							<input hidden="true" value="SEARCH" name="action">
 							<input type="text" name="searchField"
 								placeholder="Search for product" />
 							<button class="searchBtn" type="submit">
@@ -76,14 +77,18 @@
 						</c:forEach>
 					</ul>
 					<div class="user_option">
-						<a href="account.jsp"> <i class="fa fa-user"
-							aria-hidden="true"></i> <span>Login</span>
-						</a> <a href=""> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
-						</a>
+						<c:if test="${empty sessionScope.user}">
+							<a href="login.jsp"> <i class="fa fa-user"
+								aria-hidden="true"></i> <span>Login</span>
+							</a>
+							<a href=""> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+							</a>
+						</c:if>
 						<c:if test="${not empty sessionScope.user}">
 							<span>Welcome, ${user.firstName}!</span>
-							<a href="Account?action=LOGOUT"> <i class="fa fa-user"
-							aria-hidden="true"></i> <span>Logout</span>
+							<a href="Authentication?action=LOGOUT"> <i class="fa fa-user"
+								aria-hidden="true"></i> <span>Logout</span>
+							</a>
 						</c:if>
 					</div>
 				</div>
