@@ -110,6 +110,8 @@
 							${productDetails.productDescription} <br> Quantity:
 							${productDetails.quantiy}
 						</div>
+						<br>
+						<input type="button" value="ADD TO CART">
 					</div>
 				</div>
 			</div>
