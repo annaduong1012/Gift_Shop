@@ -9,5 +9,6 @@
 		<welcome-file>Product</welcome-file>
 		<welcome-file>Authentication</welcome-file>
 		<welcome-file>Register</welcome-file>
+		<welcome-file>Cart</welcome-file>
 	</welcome-file-list>
 </web-app>

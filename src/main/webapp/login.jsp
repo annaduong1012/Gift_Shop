@@ -41,50 +41,9 @@
 </head>
 
 <body>
-	<div class="hero_area">
-		<!-- header section strats -->
-		<header class="header_section">
-			<nav class="navbar navbar-expand-lg custom_nav-container ">
-				<a class="navbar-brand" href="Home"> <span> Giftos </span>
-				</a>
-				<button class="navbar-toggler" type="button" data-toggle="collapse"
-					data-target="#navbarSupportedContent"
-					aria-controls="navbarSupportedContent" aria-expanded="false"
-					aria-label="Toggle navigation">
-					<span class=""></span>
-				</button>
-
-				<!-- search bar -->
-				<div class="searchBar">
-					<form action="Home" method="get" class="searchForm">
-						<div>
-							<input type="text" name="searchField"
-								placeholder="Search for product" />
-							<button class="searchBtn" type="submit">
-								<i class="fa fa-search" aria-hidden="true"></i>
-							</button>
-						</div>
-					</form>
-				</div>
-
-				<!-- end search bar -->
-
-				<div class="collapse navbar-collapse" id="navbarSupportedContent">
-					<ul class="navbar-nav  ">
-						<li class="nav-item"><a class="nav-link" href="Home">Home</a></li>
-					</ul>
-					<div class="user_option">
-						<a href="login.jsp"> <i class="fa fa-user" aria-hidden="true"></i>
-							<span> Login </span>
-						</a> <a href=""> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
-						</a>
-					</div>
-				</div>
-			</nav>
-		</header>
-		<!-- end header section -->
-	</div>
-	<!-- end hero area -->
+	<!-- header section starts -->
+	<jsp:include page="/header-section.jsp" />
+	<!-- end header section -->
 
 	<!-- login section -->
 	<section class="shop_section layout_padding" id="login">
@@ -96,7 +55,8 @@
 				<p style="color: red;">${loginErrorMessage}</p>
 			</c:if>
 			<div>
-				<form action="Authentication?action=LOGIN" method="post" class="loginForm">
+				<form action="Authentication?action=LOGIN" method="post"
+					class="loginForm">
 					<input hidden="true" value="LOGIN" name="action">
 					<div class="form-group">
 						<label for="userName">Username:</label> <input type="text"
@@ -120,71 +80,10 @@
 		</div>
 	</section>
 	<!-- end login section -->
-	<!-- info section -->
 
-	<section class="info_section  layout_padding2-top">
-		<div class="social_container">
-			<div class="social_box">
-				<a href=""> <i class="fa fa-facebook" aria-hidden="true"></i>
-				</a> <a href=""> <i class="fa fa-twitter" aria-hidden="true"></i>
-				</a> <a href=""> <i class="fa fa-instagram" aria-hidden="true"></i>
-				</a> <a href=""> <i class="fa fa-youtube" aria-hidden="true"></i>
-				</a>
-			</div>
-		</div>
-		<div class="info_container ">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-6 col-lg-3">
-						<h6>ABOUT US</h6>
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-							sed doLorem ipsum dolor sit amet, consectetur adipiscing elit,
-							sed doLorem ipsum dolor sit amet,</p>
-					</div>
-					<div class="col-md-6 col-lg-3">
-						<div class="info_form ">
-							<h5>Newsletter</h5>
-							<form action="#">
-								<input type="email" placeholder="Enter your email">
-								<button>Subscribe</button>
-							</form>
-						</div>
-					</div>
-					<div class="col-md-6 col-lg-3">
-						<h6>NEED HELP</h6>
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-							sed doLorem ipsum dolor sit amet, consectetur adipiscing elit,
-							sed doLorem ipsum dolor sit amet,</p>
-					</div>
-					<div class="col-md-6 col-lg-3">
-						<h6>CONTACT US</h6>
-						<div class="info_link-box">
-							<a href=""> <i class="fa fa-map-marker" aria-hidden="true"></i>
-								<span> Gb road 123 london Uk </span>
-							</a> <a href=""> <i class="fa fa-phone" aria-hidden="true"></i> <span>+01
-									12345678901</span>
-							</a> <a href=""> <i class="fa fa-envelope" aria-hidden="true"></i>
-								<span> demo@gmail.com</span>
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- footer section -->
-		<footer class=" footer_section">
-			<div class="container">
-				<p>
-					&copy; <span id="displayYear"></span> All Rights Reserved By <a
-						href="https://html.design/">Free Html Templates</a>
-				</p>
-			</div>
-		</footer>
-		<!-- footer section -->
-
-	</section>
-
-	<!-- end info section -->
+	<!-- footer section start -->
+	<jsp:include page="/footer-section.jsp" />
+	<!-- footer section end -->
 
 
 	<script src="js/jquery-3.4.1.min.js"></script>
