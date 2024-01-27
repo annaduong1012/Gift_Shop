@@ -1,4 +1,5 @@
 package entity;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,6 @@ public class Product {
 	private int quantiy;
 	private String categoryName;
 	private int categoryId;
-
 
 	public Product(String name, int price, String imgName) {
 		super();
@@ -78,8 +78,20 @@ public class Product {
 		super();
 		this.categoryName = categoryName;
 	}
-	
+
 	public boolean getIsNew() {
 		return isNew;
 	}
+
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		Product product = (Product) obj;
+		return this.id == product.getId();
+	}
+
 }

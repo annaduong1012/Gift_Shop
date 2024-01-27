@@ -42,9 +42,6 @@
 						<a href="login.jsp"> <i class="fa fa-user" aria-hidden="true"></i>
 							<span>Login</span>
 						</a>
-						<a href=""> <i class="fa fa-shopping-bag" aria-hidden="true"></i>
-							${sessionScope.cart.size()}
-						</a>
 					</c:if>
 					<c:if test="${not empty sessionScope.user}">
 						<span>Welcome, ${user.firstName}!</span>
@@ -52,6 +49,9 @@
 							aria-hidden="true"></i> <span>Logout</span>
 						</a>
 					</c:if>
+					<a href="Cart?action=VIEW_CART"> <i class="fa fa-shopping-bag"
+						aria-hidden="true"></i> ${sessionScope.cart.items.keySet().size()}
+					</a>
 				</div>
 			</div>
 		</nav>
