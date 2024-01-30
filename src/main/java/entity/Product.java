@@ -85,7 +85,9 @@ public class Product {
 
 	@Override
 	public int hashCode() {
-		return super.hashCode();
+		int hashCode = 1;
+		hashCode = 31 * hashCode + id;
+		return hashCode;
 	}
 
 	@Override

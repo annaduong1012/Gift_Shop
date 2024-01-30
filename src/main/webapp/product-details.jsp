@@ -70,7 +70,7 @@
 					</div>
 					<br>
 					<form action="Cart">
-						<input type="text" value="ADD_TO_CART" name="ACTION" hidden="true">
+						<input type="text" value="ADD_TO_CART" name="action" hidden="true">
 						<input type="text" value="${productDetails.id}" name="productId"
 							hidden="true"> <input type="submit" value="ADD TO CART">
 					</form>

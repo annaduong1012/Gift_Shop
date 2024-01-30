@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 
 public class Cart {
 	private Map<Product, Integer> items;
-	private double total;
+	private double totalPrice;
 }

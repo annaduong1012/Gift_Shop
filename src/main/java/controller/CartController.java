@@ -10,36 +10,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import dao.CartDAO;
 import dao.ProductDAO;
 import entity.Cart;
 import entity.Product;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
-/**
- * Servlet implementation class CartController
- */
 @WebServlet("/Cart")
 public class CartController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
 	public CartController() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
-			String action = request.getParameter("ACTION");
-
+			String action = request.getParameter("action");
+			if (action == null) {
+				action = "DEFAULT";
+			}
 			switch (action) {
 			case "ADD_TO_CART": {
 				addToCart(request, response);
@@ -53,7 +44,6 @@ public class CartController extends HttpServlet {
 				break;
 			}
 		} catch (ServletException | IOException | SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -81,15 +71,7 @@ public class CartController extends HttpServlet {
 		} else {
 			cart.getItems().put(product, 1);
 		}
-
-		for (Map.Entry<Product, Integer> entry : cart.getItems().entrySet()) {
-			System.out.println("PRODUCT " + entry.getKey().getName());
-			System.out.println("PRICE " + entry.getKey().getPrice());
-			System.out.println("Quantity " + entry.getValue());
-			System.out.println("--------");
-
-		}
-
+		cart.setTotalPrice(cart.getTotalPrice() + product.getPrice());
 		session.setAttribute("cart", cart);
 		response.sendRedirect("Product?productId=" + productId);
 
@@ -100,9 +82,13 @@ public class CartController extends HttpServlet {
 		HttpSession session = request.getSession();
 		Cart cart = (Cart) session.getAttribute("cart");
 
-		// Calculate total price 
-		double totalPrice = CartDAO.calculateTotalPrice(cart.getItems());
-		request.setAttribute("totalPrice", totalPrice);
+		if (cart != null && cart.getItems() != null) {
+			double totalPrice = cart.getTotalPrice();
+			request.setAttribute("totalPrice", totalPrice);
+		} else {
+			// When cart or items is null
+			request.setAttribute("totalPrice", 0.0);
+		}
 
 		// Forward to the cart.jsp page
 		request.getRequestDispatcher("cart.jsp").forward(request, response);
