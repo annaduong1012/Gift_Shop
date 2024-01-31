@@ -50,7 +50,7 @@
 						</a>
 					</c:if>
 					<a href="Cart?action=VIEW_CART"> <i class="fa fa-shopping-bag"
-						aria-hidden="true"></i> (${sessionScope.cart.items.keySet().size()})
+						aria-hidden="true"></i> (${sessionScope.cart.items.size()})
 					</a>
 				</div>
 			</div>

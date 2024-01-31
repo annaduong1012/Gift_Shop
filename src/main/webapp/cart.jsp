@@ -60,12 +60,12 @@
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="itemInCart" items="${sessionScope.cart.items}">
+						<c:forEach var="productInCart" items="${sessionScope.cart.items}">
 							<tr>
-								<td>${itemInCart.key.name}</td>
-								<td>${itemInCart.value}</td>
-								<td>$${itemInCart.key.price}</td>
-								<td>$${itemInCart.key.price * itemInCart.value}</td>
+								<td>${productInCart.name}</td>
+								<td>${productInCart.quantity}</td>
+								<td>$${productInCart.price}</td>
+								<td>$${productInCart.subTotal}</td>
 							</tr>
 						</c:forEach>
 					</tbody>

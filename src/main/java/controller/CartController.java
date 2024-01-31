@@ -13,8 +13,9 @@ import javax.servlet.http.HttpSession;
 import dao.ProductDAO;
 import entity.Cart;
 import entity.Product;
+import entity.ProductInCart;
 
-import java.util.HashMap;
+import java.util.HashSet;
 
 @WebServlet("/Cart")
 public class CartController extends HttpServlet {
@@ -57,21 +58,31 @@ public class CartController extends HttpServlet {
 
 		if (session.getAttribute("cart") == null) {
 			cart = new Cart();
-			cart.setItems(new HashMap<Product, Integer>());
+			cart.setItems(new HashSet<ProductInCart>());
 		} else {
 			cart = (Cart) session.getAttribute("cart");
 		}
 
 		// check if object Product exist in cart.getproductid
 		Product product = ProductDAO.getProductById(productId);
+		ProductInCart productInCart = new ProductInCart(product.getId(), product.getName(), product.getPrice(),
+				product.getPrice(), 1);
 
-		if (cart.getItems().containsKey(product)) {
-			int newQuantity = cart.getItems().get(product) + 1;
-			cart.getItems().put(product, newQuantity);
+		if (cart.getItems().contains(productInCart)) {
+			for (ProductInCart item : cart.getItems()) {
+				if (item.getId() == productInCart.getId()) {
+					productInCart.setQuantity(item.getQuantity() + 1);
+					productInCart.setSubTotal(item.getQuantity() * productInCart.getPrice());
+				}
+			}
+
+			// remove old key to replace with new key
+			cart.getItems().remove(productInCart);
+			cart.getItems().add(productInCart);
 		} else {
-			cart.getItems().put(product, 1);
+			cart.getItems().add(productInCart);
 		}
-		cart.setTotalPrice(cart.getTotalPrice() + product.getPrice());
+		cart.setTotal(cart.getTotal() + product.getPrice());
 		session.setAttribute("cart", cart);
 		response.sendRedirect("Product?productId=" + productId);
 
@@ -83,7 +94,7 @@ public class CartController extends HttpServlet {
 		Cart cart = (Cart) session.getAttribute("cart");
 
 		if (cart != null && cart.getItems() != null) {
-			double totalPrice = cart.getTotalPrice();
+			double totalPrice = cart.getTotal();
 			request.setAttribute("totalPrice", totalPrice);
 		} else {
 			// When cart or items is null

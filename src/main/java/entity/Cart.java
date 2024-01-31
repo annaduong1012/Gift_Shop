@@ -1,6 +1,6 @@
 package entity;
 
-import java.util.Map;
+import java.util.Set;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 
 public class Cart {
-	private Map<Product, Integer> items;
-	private double totalPrice;
+	private Set<ProductInCart> items;
+	private double total;
 }
