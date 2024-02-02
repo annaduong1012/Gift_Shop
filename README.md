@@ -17,6 +17,10 @@ Welcome to the Gift Shop project! This practice project is designed to showcase 
 - [x] Create login function and redirect to index.jsp once login is successful
 - [x] Add register page
 - [x] Change Java code to MVC
+- [x] Create orders and order_details table
+- [ ] Create Order entity
+- [ ] Add logic to only show Proceed to Checkout once logged in, if not logged in --> Login to Checkout
+- [ ] 
 
 
  
